@@ -1,0 +1,41 @@
+Comandos rpm
+Instalación de paquetes RPM:
+
+# rpm -ivh foo.rpm
+# rpm -i ftp://ftp.dominio.com/pub/redhat/RPMS/foo.rpm
+# rpm -i http://www.dominio.com/projects/files/foo.rpm
+
+Desinstalar paquetes RPM
+
+# rpm -e foo
+
+Actualizar paquetes RPM
+
+# rpm -Uvh foo-1.0-2.i386.rpm
+# rpm -Uvh ftp://ftp.dominio.com/pub/redhat/RPMS/foo.rpm
+# rpm -Uvh http://www.dominio.com/projects/fil
+
+Listar todos los paquetes RPM instalados en el sistema
+
+# rpm -qa
+
+Listar información de un paquete RPM
+
+# rpm -qi foo
+
+Listar ficheros de un paquete RPM instalado
+
+# rpm -ql foo
+
+Listar solo los ficheros de configuración
+
+# rpm -qc foo
+
+Verificar firma de un paquete RPM
+
+# rpm --checksig foo
+
+Como obtener el nombre de un paquete conociendo su libreria.
+
+# rpm -qf /lib64/libcrypto.so.6
+
