@@ -1,0 +1,11 @@
+adduser - crea una cuenta de usuario
+chsh - este comando cambia la shell de un usuario
+groups - muestra el listado de grupos de usuarios del sistema
+id - muestra la información de usuario y grupo de un determinado usuario
+logout - se sale del sistema deslogueando al usuarui, peromitiendo iniciar sesión con otro usuario
+passwd - cambia la contraseña de un determinado usuario
+su - le da privilegios de root (administrador) a un usuario
+talk - permite hablar con otros usuarios
+users - lista los usuarios conectados al sistema
+who - muestra información de los usuarios conectados al sistema
+whoami - muestra nuestra información
