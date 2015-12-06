@@ -19,6 +19,10 @@ Listar todos los paquetes RPM instalados en el sistema
 
 # rpm -qa
 
+listar usando grep
+
+# rpm -qa | grep httpd
+
 Listar información de un paquete RPM
 
 # rpm -qi foo
