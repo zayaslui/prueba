@@ -1,0 +1,28 @@
+ - crear usuario
+    CREATE USER user [IDENTIFIED BY [PASSWORD] 'password']
+
+ - otorgar permisos de usuario diferentes
+    GRANT [permiso] ON [nombre de bases de datos].[nombre de tabla] TO ‘[nombre de usuario]’@'localhost’;
+    FLUSH PRIVILEGES;
+ 
+- acceso remoto
+    GRANT ALL PRIVILEGES ON *.* TO [nombre de usuario]@'%' IDENTIFIED BY 'password';
+    FLUSH PRIVILEGES;
+    
+- remover un permiso
+    REVOKE [permiso] ON [nombre de base de datos].[nombre de tabla] FROM ‘[nombre de usuario]’@‘localhost’;
+    FLUSH PRIVILEGES;
+    
+- para borrar usuarios:
+    DROP USER ‘usuario_prueba’@‘localhost’;
+    
+- Para probar el nuevo usaurio
+    mysql -u [nombre de usuario]-p
+    salir quit
+    
+- para actulizar contraseña
+    update user set password=PASSWORD("ElNuevoPassword") where user='root';
+    flush privileges;
+    quit
+    
+- 
