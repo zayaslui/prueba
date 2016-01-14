@@ -9,3 +9,5 @@ talk - permite hablar con otros usuarios
 users - lista los usuarios conectados al sistema
 who - muestra información de los usuarios conectados al sistema
 whoami - muestra nuestra información
+
+cat /etc/passwd | cut -d":" -f1  -  listados de usuarios creados en linux ubuntu
