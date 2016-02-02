@@ -1,0 +1,117 @@
+(function (window, undefined) {
+    'use strict';
+
+    var cw_mark = 'cw-wrapper';
+    var util = {
+        events: {}
+    };
+    //属性复制 valida si tiene la propiedad
+    util.propertyHandle = function (old_fn, new_fn) {
+        for (var obj in old_fn) {
+            if (Object.prototype.hasOwnProperty.call(old_fn, obj)) {
+                new_fn[obj] = old_fn[obj];
+            }
+        }
+
+        return new_fn;
+    }
+    //判断是否已经被wrapper
+    //valida si es funcion
+    util.isFn = function (fn) {
+        return !(fn && typeof fn == 'function' && fn.apply && !fn[cw_mark]);
+    }
+    //绑定function
+    //{["click",callback()]}
+    util.on = function (event_name, eventFn) {
+        this.events[event_name] = this.listener(event_name).concat(eventFn);
+    }
+    //按方法名获取已绑定function
+    util.listener = function (event_name) {
+        if (event_name != undefined) {
+            return this.events[event_name] || [];
+        } else {
+            return this.events;
+        }
+    }
+    //触发已绑定function
+    util.emit = function (event_name, args) {
+        var c_events = this.listener(event_name);
+        var len = c_events.length;
+        for (var i = 0; i < len; i++) {
+            if (typeof c_events[i] == 'function') {
+                c_events[i](args);
+            }
+        }
+    }
+    //wrapper function
+    util.eventsWrapper = function (fn, fn_name) {
+        function wrapperFn() {
+            try {
+                var self = this;
+                var args = Array.prototype.slice.call(arguments);
+
+                util.emit(fn_name+'-start', args);
+
+                return fn.apply(self, args);
+            } catch (e) {
+                throw e;
+            } finally {
+                //console.log('-------------------------');
+            }
+        }
+
+        if (util.isFn(fn)) {
+            return fn;
+        } else {
+            util.propertyHandle(fn, wrapperFn);
+            wrapperFn[cw_mark] = true;
+
+            fn.wrapped = wrapperFn;
+
+            return wrapperFn;
+        }
+
+    }
+    //wrapper functions
+    util.eventLisenerWrapper = function (target, fn_names) {
+        for (var i = 0, l = fn_names.length; i < l; i++) {
+            var fn_name = fn_names[i];
+            var fn = target[fn_name];
+
+            if (!util.isFn(fn)) {
+                target[fn_name] = util.eventsWrapper(fn, fn_name);
+            }
+        }
+    }
+
+    //
+    util.on('addEventListener-start', function (args) {
+        var self_fn = args[1];
+
+        if (typeof self_fn == 'function') {
+            args[1] = self_fn.wrapped || util.eventsWrapper(self_fn, 'fn');
+        }
+    });
+
+    util.on("removeEventListener-start", function (args) {
+        var wrapped = args[1].wrapped;
+        if (wrapped) {
+            args[1] = wrapped;
+        }
+    });
+
+    util.on('fn-start', function (event) {
+        console.log(event)
+    });
+
+    if ("getPrototypeOf" in Object) {
+        var target = document;
+        while (target && !target.hasOwnProperty("addEventListener")) {
+            target = Object.getPrototypeOf(target);
+        }
+        util.eventLisenerWrapper(target, ["addEventListener", "removeEventListener"]);
+    }
+    util.eventLisenerWrapper(window, ["addEventListener", "removeEventListener"]);
+
+
+})(this);
