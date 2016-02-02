@@ -5,7 +5,7 @@
     var util = {
         events: {}
     };
-    //属性复制 valida si tiene la propiedad
+    //???? valida si tiene la propiedad
     util.propertyHandle = function (old_fn, new_fn) {
         for (var obj in old_fn) {
             if (Object.prototype.hasOwnProperty.call(old_fn, obj)) {
@@ -15,41 +15,43 @@
 
         return new_fn;
     }
-    //判断是否已经被wrapper
+    //???????wrapper
     //valida si es funcion
     util.isFn = function (fn) {
         return !(fn && typeof fn == 'function' && fn.apply && !fn[cw_mark]);
     }
-    //绑定function
-    //{["click",callback()]}
+    //??function
+    //{["click",callback()]} carga en el array this.events["click"] = this.listener("click").concat(callback);
     util.on = function (event_name, eventFn) {
         this.events[event_name] = this.listener(event_name).concat(eventFn);
     }
-    //按方法名获取已绑定function
+    //event_name puede ser omitido y se toma como unfined
+    //si 
+    //?????????function retorna el array que contiene los eventos
     util.listener = function (event_name) {
         if (event_name != undefined) {
-            return this.events[event_name] || [];
+            return this.events[event_name] || [];//this.events["click"]
         } else {
             return this.events;
         }
     }
-    //触发已绑定function
+    //?????function
     util.emit = function (event_name, args) {
-        var c_events = this.listener(event_name);
-        var len = c_events.length;
-        for (var i = 0; i < len; i++) {
+        var c_events = this.listener(event_name);//traeme los listeners []
+        var len = c_events.length;//cuéntalo
+        for (var i = 0; i < len; i++) {//recórrelo
             if (typeof c_events[i] == 'function') {
                 c_events[i](args);
             }
         }
     }
     //wrapper function
-    util.eventsWrapper = function (fn, fn_name) {
+    util.eventsWrapper = function (fn, fn_name) { //
         function wrapperFn() {
             try {
                 var self = this;
-                var args = Array.prototype.slice.call(arguments);
-
+                var args = Array.prototype.slice.call(arguments);//copia los 
+//                var args = Arrayslice(arguments);//forma correcta
                 util.emit(fn_name+'-start', args);
 
                 return fn.apply(self, args);
@@ -70,7 +72,6 @@
 
             return wrapperFn;
         }
-
     }
     //wrapper functions
     util.eventLisenerWrapper = function (target, fn_names) {
