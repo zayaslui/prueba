@@ -36,23 +36,23 @@
         }
     }
     //?????function
-    util.emit = function (event_name, args) {
-        var c_events = this.listener(event_name);//traeme los listeners []
+    util.emit = function (event_name, args) {//"addEventListener-start",[document["addEventListener"],"addEventListener"]
+        var c_events = this.listener(event_name);//traeme los listeners [] primeramente vacio
         var len = c_events.length;//cuéntalo
         for (var i = 0; i < len; i++) {//recórrelo
-            if (typeof c_events[i] == 'function') {
+            if (typeof c_events[i] == 'function') {//preguntan si es una funcion
                 c_events[i](args);
             }
         }
     }
     //wrapper function
-    util.eventsWrapper = function (fn, fn_name) { //
+    util.eventsWrapper = function (fn, fn_name) { //document["addEventListener"],"addEventListener";
         function wrapperFn() {
             try {
                 var self = this;
-                var args = Array.prototype.slice.call(arguments);//copia los 
-//                var args = Arrayslice(arguments);//forma correcta
-                util.emit(fn_name+'-start', args);
+                var args = Array.prototype.slice.call(arguments);//[document["addEventListener"],"addEventListener"] 
+//                var args = Array.slice(arguments);//forma correcta
+                util.emit(fn_name+'-start', args);//"addEventListener-start",[document["addEventListener"],"addEventListener"]
 
                 return fn.apply(self, args);
             } catch (e) {
@@ -63,7 +63,7 @@
         }
 
         if (util.isFn(fn)) {
-            return fn;
+            return fn;//document["addEventListener"]
         } else {
             util.propertyHandle(fn, wrapperFn);
             wrapperFn[cw_mark] = true;
@@ -74,18 +74,19 @@
         }
     }
     //wrapper functions
-    util.eventLisenerWrapper = function (target, fn_names) {
-        for (var i = 0, l = fn_names.length; i < l; i++) {
-            var fn_name = fn_names[i];
+    util.eventLisenerWrapper = function (target, fn_names) {//document,["addEventListener","removeEventListener"]
+        for (var i = 0, l = fn_names.length; i < l; i++) {//fn = document["addEventListener"];
+            var fn_name = fn_names[i];                     //fn_name = "addEventListener"
             var fn = target[fn_name];
 
             if (!util.isFn(fn)) {
-                target[fn_name] = util.eventsWrapper(fn, fn_name);
+                //reclicar array si es funcion
+                target[fn_name] = util.eventsWrapper(fn, fn_name);//document["addEventListener"],"addEventListener";
             }
         }
     }
 
-    //
+    // se cargan los listeners con on
     util.on('addEventListener-start', function (args) {
         var self_fn = args[1];
 
