@@ -6,7 +6,7 @@
     FLUSH PRIVILEGES;
  
 - acceso remoto
-    GRANT ALL PRIVILEGES ON *.* TO [nombre de usuario]@'%' IDENTIFIED BY 'password';
+    GRANT ALL PRIVILEGES ON *.* TO [nombre de usuario]@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;;
     FLUSH PRIVILEGES;
     
 - remover un permiso
