@@ -1,0 +1,11 @@
+.sql
+hacer backup
+# pg_dump basededatos > fichero.sql
+La restauración del backup
+# psql basededatos < fichero.sql
+Especificando parámetros:
+# psql -U usuario -d basededatos -p 5432 -h 192.168.0.111 < fichero.sql
+backup todo el server
+# pg_dumpall > backup_server.sql
+
+.backup
