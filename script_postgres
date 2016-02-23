@@ -1,0 +1,3 @@
+crear un campo contador
+
+SELECT ROW_NUMBER() OVER (ORDER BY campo) AS item,* FROM tabla ;
