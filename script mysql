@@ -1,0 +1,5 @@
+para crear un campo contador
+
+SELECT
+       (@a:=@a+1) contador, descripcion
+    FROM cajas JOIN (SELECT @a:= 0) T
