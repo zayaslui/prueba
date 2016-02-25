@@ -17,3 +17,11 @@ Verificar dblink
 Testing
    SELECT dblink_connect('host=localhost user=postgres password=enjoy dbname=postgres');
    
+ejemplo
+select * from dblink('host=localhost user=postgres password=postgres dbname=annp_mesa', 'select * from public.documentos') as t1(documento int4,descripcion varchar);
+
+En una vista
+
+create view documentos as
+select * from dblink('host=localhost user=postgres password=postgres dbname=annp_mesa', 'select * from public.documentos') as t1(documento int4,descripcion varchar);
+
