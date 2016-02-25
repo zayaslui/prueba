@@ -25,3 +25,23 @@ En una vista
 create view documentos as
 select * from dblink('host=localhost user=postgres password=postgres dbname=annp_mesa', 'select * from public.documentos') as t1(documento int4,descripcion varchar);
 
+----
+
+select * from
+dblink ('dbname=annp_mesa hostaddr=192.168.0.5 user=postgres password=postgres port=5432','SELECT ano, expediente, documento, persona, fecha, referencia, estado, 
+       departamento, recepcion, propietario_expediente, hora, observacion,tipo_operacion, folio, fecha_documento
+  FROM expedientes') as t1 (  ano integer,
+  expediente integer,
+  documento integer,
+  persona integer,
+  fecha timestamp without time zone,
+  referencia character varying(255),
+  estado integer,
+  departamento integer,
+  recepcion integer,
+  propietario_expediente integer,
+  hora time without time zone,
+  observacion character varying(100),
+  tipo_operacion integer,
+  folio character varying(50),
+  fecha_documento timestamp without time zone)
