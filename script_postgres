@@ -25,6 +25,7 @@ En una vista
 create view documentos as
 select * from dblink('host=localhost user=postgres password=postgres dbname=annp_mesa', 'select * from public.documentos') as t1(documento int4,descripcion varchar);
 
+
 ----
 
 select * from
@@ -45,3 +46,9 @@ dblink ('dbname=annp_mesa host=localhost user=postgres password=postgres port=54
   tipo_operacion integer,
   folio character varying(50),
   fecha_documento timestamp without time zone)
+
+
+
+funciones varias substring en select =========>
+
+select substring('4191/2013',0,position('/' in '4191/2013'))::int as expediente,substring('4191/2013',position('/' in '4191/2013')+1,character_length('4191/2013'))::int as periodo
