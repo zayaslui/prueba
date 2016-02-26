@@ -28,7 +28,7 @@ select * from dblink('host=localhost user=postgres password=postgres dbname=annp
 ----
 
 select * from
-dblink ('dbname=annp_mesa hostaddr=192.168.0.5 user=postgres password=postgres port=5432','SELECT ano, expediente, documento, persona, fecha, referencia, estado, 
+dblink ('dbname=annp_mesa host=localhost user=postgres password=postgres port=5432','SELECT ano, expediente, documento, persona, fecha, referencia, estado, 
        departamento, recepcion, propietario_expediente, hora, observacion,tipo_operacion, folio, fecha_documento
   FROM expedientes') as t1 (  ano integer,
   expediente integer,
