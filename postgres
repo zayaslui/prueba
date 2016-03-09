@@ -6,7 +6,7 @@ backup todo el server
 La restauración del backup
 # psql basededatos < fichero.sql
 Especificando parámetros:
-# psql -U usuario -d basededatos -p 5432 -h 192.168.0.111 < fichero.sql
+# psql -U usuario -d basededatos -p 5432 -h 192.168.0.111 -W < fichero.sql
 
 .backup
 
