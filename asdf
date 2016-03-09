@@ -1,0 +1,11 @@
+--cuenta mayor 26104
+--especificacion 01
+--analitico 26
+select a.id,
+a.cod as mayor,b.cod as especificacion,c.cod as analitico,b.descrip
+from bienuso.clasifbu a 
+inner join bienuso.clasifbu b on a.id=b.padre_id
+left join bienuso.clasifbu c on c.padre_id=b.id
+where a.cod='26104' and b.cod='01' and c.cod='26'
+
+--select cod from bienuso.clasifbu group by cod order by cod
