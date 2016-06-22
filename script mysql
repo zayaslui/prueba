@@ -1,5 +1,6 @@
 para crear un campo contador
-
-SELECT
-       (@a:=@a+1) contador, *
-    FROM tabla JOIN (SELECT @a:= 0) T
+SET @serial=0;
+SELECT 
+@serial := @serial+1 AS contador,
+campo
+from tabla
