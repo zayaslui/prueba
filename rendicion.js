@@ -18,3 +18,25 @@ var comision=document.getElementById("comision");
 
 rendicion.addEventListener("keypress",calcular)
 
+function aa(){
+			var entrada = document.getElementById("entrada");
+			var str = entrada.value;
+			console.log("probando..."+str);
+			
+			var hr = new XMLHttpRequest();
+			var url = "respuesta.php";
+			var vars = "entrada="+str;
+			hr.open("POST", url, true);
+			
+			hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			
+			hr.onreadystatechange = function() {
+				if(hr.readyState == 4 && hr.status == 200) {
+					var return_data = hr.responseText;
+					document.getElementById("respuesta").innerHTML = return_data;
+				}
+			}
+			
+			hr.send(vars);
+			
+		}
