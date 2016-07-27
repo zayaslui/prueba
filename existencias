@@ -1,0 +1,94 @@
+/*inventario al 2016-01-01*/--trae todas las existencias del bien con fechas menores a la fecha de fechaIni, 
+--que pasa el mismo bien con diferentes almacenes? tener en cuenta
+select 
+ 		hs.existencia
+	from stock.histbc hs 
+	where hs.id=( select max(hs.id)
+		from stock.histbc hs
+		where (hs.fecha_mov<to_date('2016-01-01', 'yyyy-mm-dd'))--fechaIni1 -- fechaIni2
+		and hs.bien_consumo_id=21985834 and hs.almacen_id=683) 
+		and hs.bien_consumo_id=21985834
+/*fix*/
+--primer campo traer "existencias" del bien independiente al almacen que esten y que sea menores a la fecha ini
+--select * from stock.histbc where fecha_mov < to_date('2016-07-26', 'yyyy-mm-dd')
+select 
+(
+	+ coalesce((select sum(cantidad) from stock.histbc as h1 where h1.fecha_mov < to_date('2016-07-26', 'yyyy-mm-dd') and h1.movimiento='Ingreso' and h1.bien_consumo=2198583),0) 
+	- coalesce((select sum(cantidad) from stock.histbc as h2 where h2.fecha_mov < to_date('2016-07-26', 'yyyy-mm-dd') and h2.movimiento='Entrega' and h2.bien_consumo=2198583),0)
+	- coalesce((select sum(cantidad) from stock.histbc as h3 where h3.fecha_mov < to_date('2016-07-26', 'yyyy-mm-dd') and h3.movimiento='baja' and h3.bien_consumo=2198583),0)
+) 
+as existencia
+
+--segundo campo
+-- * compras desde */--se "lista todas los bienes ingresados entre la fecha ini y fin", 
+-- no importa si se han dado de baja y no importa a que almacen hayan sido destinados
+select sum(hs.cantidad) 
+	from stock.histbc hs
+	where (('8' is null or hs.fecha_mov>=to_date('2016-01-01', 'yyyy-mm-dd')) and --fechaIni3 fechaIni4
+		('8' is null or hs.fecha_mov<=to_date('2016-01-01', 'yyyy-mm-dd')) ) --fechaFin1 --fechaFin2
+		and hs.movimiento='Ingreso' and hs.bien_consumo_id=2198583 and hs.almacen_id=683
+
+--fix segunda columna 
+select sum(hs.cantidad) 
+	from stock.histbc hs
+	where hs.fecha_mov between '2016-01-01' and '2016-07-03'
+	and hs.movimiento='Ingreso' and hs.bien_consumo_id=2198583
+
+--tercera columna
+/*total inventario, compras al 03/07/2016*/ --"existencia" lo que sobra de las compras "Ingreso" (ingreso-entrega-baja)
+-- existencia menores a la fecha fin
+-- no importa en que almacen este ubicado
+
+select hs.existencia 
+	from stock.histbc hs
+	where hs.id=( select max(hs.id) 
+		from stock.histbc hs
+		where ('a' is null or hs.fecha_mov<=to_date('2016-07-03', 'yyyy-mm-dd')) --fechaIni3 --fechaFin4
+		and hs.movimiento='Ingreso' and hs.bien_consumo_id=2198583 and hs.almacen_id=683 )
+		and hs.bien_consumo_id=2198583
+
+--opcional mas entendible
+-- existencias menores a fecha fin
+select (
++(select sum(hs1.cantidad)from stock.histbc h5 where hs1.bien_consumo_id=2198583 and h5.fecha_mov<=to_date('2016-07-03', 'yyyy-mm-dd') and h5.movimiento='Ingreso') 
+-(select sum(hs1.cantidad)from stock.histbc h6 where hs1.bien_consumo_id=2198583 and h6.fecha_mov<=to_date('2016-07-03', 'yyyy-mm-dd') and h6.movimiento='Entrega') 
+-(select sum(hs1.cantidad)from stock.histbc h7 where hs1.bien_consumo_id=2198583 and h7.fecha_mov<=to_date('2016-07-03', 'yyyy-mm-dd') and h7.movimiento='Baja')
+) as existencia_al
+
+/*Salida al 03/07/2016 */ --las entregas desde hasta
+-- entregas entre la fecha ini y fin
+
+select sum(hs.cantidad) 
+	from stock.histbc hs
+	where (('a' is null or hs.fecha_mov>=to_date('2016-01-01', 'yyyy-mm-dd')) and --fechaini5 --fechaIni6
+		('a' is null or hs.fecha_mov<=to_date('2016-07-03', 'yyyy-mm-dd')) ) --fechaFin5 --fechaFin6
+	and hs.movimiento='Entrega' and hs.bien_consumo_id=2198583 and hs.almacen_id=683
+
+-- fix
+-- entregas entre la fecha ini y fin NO IMPORTA EN QUE ALMACEN ESTE SITUADO
+
+select sum(hs.cantidad) 
+	from stock.histbc hs
+	where hs.fecha_mov between '2016-01-01'and '2016-07-03'
+	and hs.movimiento='Entrega' and hs.bien_consumo_id=2198583
+
+-- inventario total Total Inv. al 03/07/2016
+-- existencias menores a la fin
+select hs.existencia 
+	from stock.histbc hs
+	where hs.id=( select max(hs.id) 
+		from stock.histbc hs
+		where ('0' is null or hs.fecha_mov<=to_date('2016-07-03', 'yyyy-mm-dd')) and --fechaFin7 --fechaFin8
+			hs.bien_consumo_id=2198583 and hs.almacen_id=683)
+			and hs.bien_consumo_id=2198583
+
+--fix 
+--opcional
+select (
+	+ coalesce((select sum(h8.cantidad)from stock.histbc h8 where h8.bien_consumo_id=2198583 and h8.almacen_id=683 and h8.fecha_mov<=to_date('2016-07-27', 'yyyy-mm-dd') and h8.movimiento='Ingreso'),0) 
+	- coalesce((select sum(h9.cantidad)from stock.histbc h9 where h9.bien_consumo_id=2198583 and h9.almacen_id=683 and h9.fecha_mov<=to_date('2016-07-27', 'yyyy-mm-dd') and h9.movimiento='Entrega'),0)
+	- coalesce((select sum(h10.cantidad)from stock.histbc h10 where h10.bien_consumo_id=2198583 and h10.almacen_id=683 and h10.fecha_mov<=to_date('2016-07-27', 'yyyy-mm-dd') and h10.movimiento='baja'),0)
+) as existencia;
+
+
+
