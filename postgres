@@ -8,6 +8,9 @@ La restauración del backup
 Especificando parámetros:
 # psql -U usuario -d basededatos -p 5432 -h 192.168.0.111 -W < fichero.sql
 
+restauracion de pa_dumpall
+psql -h localhost -U postgres < fichero.sql
+
 .backup
 
 crear backup
